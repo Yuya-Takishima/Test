@@ -1,12 +1,17 @@
-name: learn-github-actions
-on: [push]
+on:
+  pull_request:
+    branches:
+    - 'develop_**/**/SCRUM**'
+    types: [opened,closed]
+
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  debug:
+    runs-on: ubuntu-20.04
+    if: github.event.pull_request.merged == true
+    timeout-minutes: 3
     steps:
-      - run: echo "this is pen"
-      - uses: actions/checkout@v2
-      - run: |
-          ls -al
-          cd .github/workflows/
-          ls -al
+      - name: Print branch name
+        env:
+          HEAD_BRANCH_NAME: ${{github.head_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}}
+        run: echo "HEAD_BRANCH_NAME = ["$BRANCH_NAME"], BASE_BRANCH_NAME = ["$BASE_BRANCH_NAME"]"
