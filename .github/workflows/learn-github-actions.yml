@@ -1,6 +1,8 @@
 on:
   pull_request:
-    types: [closed]
+    branches:
+    - 'develop_**/**/SCRUM**'
+    types: [opened,closed]
 
 jobs:
   debug:
@@ -12,4 +14,4 @@ jobs:
         env:
           HEAD_BRANCH_NAME: ${{github.head_ref}}
           BASE_BRANCH_NAME: ${{github.base_ref}}
-        run: echo "HEAD_BRANCH_NAME = [".$BRANCH_NAME."], BASE_BRANCH_NAME = [".$BASE_BRANCH_NAME."]"
+        run: echo "HEAD_BRANCH_NAME = ["$BRANCH_NAME"], BASE_BRANCH_NAME = ["$BASE_BRANCH_NAME"]"
