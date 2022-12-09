@@ -1,0 +1,18 @@
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    steps:
+      - name: Return value as object
+        uses: actions/github-script@v6
+        id: set-result
+        with:
+          result-encoding: string
+          script: |
+            return {{github.base_ref}};
+
+      - name:  name
+        run: echo "${{steps.set-result.outputs.result}}"
