@@ -24,8 +24,8 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const { BASE_BRANCH_NAME } = process.env
-            return $BASE_BRANCH_NAME;
+            const {BASE_BRANCH_NAME} = process.env
+            return ${BASE_BRANCH_NAME};
 
       - name:  show_ticket_name
         run: echo "${{steps.set-result.outputs.result}}"
