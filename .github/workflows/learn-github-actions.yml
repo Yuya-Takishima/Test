@@ -13,8 +13,8 @@ jobs:
       - name: Return value as object
         uses: actions/github-script@v6
         id: set-result
-        result-encoding: string
         with:
+          result-encoding: string
           script: |
             return ${{github.base_ref}};
             let base_ref = ${{github.base_ref}};
