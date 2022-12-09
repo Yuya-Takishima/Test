@@ -2,7 +2,7 @@ on:
   pull_request:
     branches:
     - 'develop_**/**/SCRUM**'
-    types: [closed]
+    types: [opened, closed]
 
 jobs:
   debug:
@@ -13,8 +13,10 @@ jobs:
       - name: Return value as object
         uses: actions/github-script@v6
         id: set-result
+        result-encoding: string
         with:
           script: |
+            return ${{github.base_ref}};
             let base_ref = ${{github.base_ref}};
             let base_ref_ary = base_ref.split('/');
             return base_ref_ary.pop();
