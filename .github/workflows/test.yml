@@ -6,13 +6,15 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: Return value as object
+      - name: get_ticket_name
+        env:
+          BASE_BRANCH_NAME: ${{github.base_ref}}
         uses: actions/github-script@v6
         id: set-result
         with:
           result-encoding: string
           script: |
-            return {github.base_ref};
+            return BASE_BRANCH_NAME;
 
-      - name:  name
+      - name:  show_ticket_name
         run: echo "${{steps.set-result.outputs.result}}"
