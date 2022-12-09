@@ -16,9 +16,11 @@ jobs:
           script: |
             const { BASE_BRANCH_NAME } = process.env
             console.log(`Hello ${BASE_BRANCH_NAME}`)
-            return "develop_JMAS/2022/SCRUM_502";
+            let base_ref = "develop_JMAS/2022/SCRUM_502"
+            let base_ref_ary = base_ref.split('/')
+            return base_ref_ary.pop()
       
       - name:  show_ticket
         env:
-          RETURN_CONTEXT2: ${{ toJson(steps.ticket_no.outputs) }}
+          RETURN_CONTEXT2: ${{ steps.ticket_no.outputs.result }}
         run: echo "$RETURN_CONTEXT2"
