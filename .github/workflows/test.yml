@@ -6,29 +6,17 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: Return context
-        uses: actions/github-script@v2
-        id: return_context
-        with:
-          script: |
-            return context
-
-      - name: Show steps.return_context
-        env:
-          RETURN_CONTEXT: ${{ toJson(steps.return_context.outputs) }}
-        run: echo "$RETURN_CONTEXT"
-
-      - uses: actions/github-script@v6
-        name: get_ticket
+      - name: get_ticket
         id: ticket_no
+        uses: actions/github-script@v6
         env:
-          FIRST_NAME: ${{github.base_ref}}
-          LAST_NAME: ${{github.head_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}}
         with:
+          result-encoding: string
           script: |
-            const { FIRST_NAME, LAST_NAME } = process.env
-            console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
-            return ${FIRST_NAME}
+            const { BASE_BRANCH_NAME } = process.env
+            console.log(`Hello ${BASE_BRANCH_NAME}`)
+            return "develop_JMAS/2022/SCRUM_502";
       
       - name:  show_ticket
         env:
