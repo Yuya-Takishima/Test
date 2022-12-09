@@ -14,7 +14,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            return BASE_BRANCH_NAME;
+            return "BASE_BRANCH_NAME";
 
       - name:  show_ticket_name
         run: echo "${{steps.set-result.outputs.result}}"
