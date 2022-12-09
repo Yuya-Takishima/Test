@@ -2,7 +2,7 @@ on:
   pull_request:
     branches:
     - 'develop_**/**/SCRUM**'
-    types: [opened,closed]
+    types: [closed]
 
 jobs:
   debug:
@@ -10,6 +10,18 @@ jobs:
     if: github.event.pull_request.merged == true
     timeout-minutes: 3
     steps:
+      - name: Return value as object
+        uses: actions/github-script@v6
+        id: set-result
+        with:
+          script: |
+            let base_ref = ${{github.base_ref}};
+            let base_ref_ary = base_ref.split('/');
+            return base_ref_ary.pop();
+
+      - name:  name
+        echo "${{steps.set-result.outputs.result}}"
+
       - name: Print branch name
         env:
           HEAD_BRANCH_NAME: ${{github.head_ref}}
