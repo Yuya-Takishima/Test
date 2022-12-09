@@ -20,7 +20,7 @@ jobs:
             return base_ref_ary.pop();
 
       - name:  name
-        echo "${{steps.set-result.outputs.result}}"
+        run: echo "${{steps.set-result.outputs.result}}"
 
       - name: Print branch name
         env:
