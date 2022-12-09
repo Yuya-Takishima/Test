@@ -16,7 +16,7 @@ jobs:
 
             console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
             
-            return ${FIRST_NAME}
+            return $FIRST_NAME
 
       - name:  show_ticket_name
         run: echo "${{steps.set-result.outputs.result}}"
