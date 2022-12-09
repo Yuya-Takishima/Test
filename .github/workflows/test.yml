@@ -9,7 +9,7 @@ jobs:
       - uses: actions/github-script@v6
         env:
           FIRST_NAME: ${{github.base_ref}}
-          LAST_NAME: Octocat
+          LAST_NAME: ${{github.head_ref}}
         with:
           script: |
             const { FIRST_NAME, LAST_NAME } = process.env
