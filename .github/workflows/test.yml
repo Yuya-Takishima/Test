@@ -6,17 +6,27 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
+      - name: Return context
+        uses: actions/github-script@v2
+        id: return_context
+        with:
+          script: |
+            return context
+
+      - name: Show steps.return_context
+        env:
+          RETURN_CONTEXT: ${{ toJson(steps.return_context.outputs) }}
+        run: echo "$RETURN_CONTEXT"
+
       - uses: actions/github-script@v6
+        name: get_ticket
         env:
           FIRST_NAME: ${{github.base_ref}}
           LAST_NAME: ${{github.head_ref}}
         with:
           script: |
             const { FIRST_NAME, LAST_NAME } = process.env
-
             console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
-            
-            return $FIRST_NAME
-
-      - name:  show_ticket_name
+      
+      - name:  show_ticket
         run: echo "${{steps.set-result.outputs.result}}"
