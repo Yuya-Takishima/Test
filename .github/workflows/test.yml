@@ -6,6 +6,16 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
+      - uses: actions/github-script@v6
+        env:
+          FIRST_NAME: ${{github.base_ref}}
+          LAST_NAME: Octocat
+        with:
+          script: |
+            const { FIRST_NAME, LAST_NAME } = process.env
+
+            console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
+
       - name: get_ticket_name
         env:
           BASE_BRANCH_NAME: ${{github.base_ref}}
