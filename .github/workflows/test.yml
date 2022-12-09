@@ -15,18 +15,8 @@ jobs:
             const { FIRST_NAME, LAST_NAME } = process.env
 
             console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
-
-      - name: get_ticket_name
-        env:
-          BASE_BRANCH_NAME: ${{github.base_ref}}
-        uses: actions/github-script@v6
-        id: set-result
-        with:
-          result-encoding: string
-          script: |
-            const {BASE_BRANCH_NAME} = process.env
             
-            return ${BASE_BRANCH_NAME}
+            return ${FIRST_NAME}
 
       - name:  show_ticket_name
         run: echo "${{steps.set-result.outputs.result}}"
