@@ -20,6 +20,7 @@ jobs:
 
       - uses: actions/github-script@v6
         name: get_ticket
+        id: ticket_no
         env:
           FIRST_NAME: ${{github.base_ref}}
           LAST_NAME: ${{github.head_ref}}
@@ -27,6 +28,9 @@ jobs:
           script: |
             const { FIRST_NAME, LAST_NAME } = process.env
             console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
+            return ${FIRST_NAME}
       
       - name:  show_ticket
-        run: echo "${{steps.set-result.outputs.result}}"
+        env:
+          RETURN_CONTEXT2: ${{ toJson(steps.ticket_no.outputs) }}
+        run: echo "$RETURN_CONTEXT2"
