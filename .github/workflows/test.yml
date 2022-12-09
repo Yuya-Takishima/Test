@@ -12,7 +12,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            return {{github.base_ref}};
+            return {github.base_ref};
 
       - name:  name
         run: echo "${{steps.set-result.outputs.result}}"
