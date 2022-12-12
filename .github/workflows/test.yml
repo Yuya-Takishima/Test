@@ -33,7 +33,7 @@ jobs:
             echo true ||
             echo false
           )
-          echo "BRANCH_IS_EXISTING=${branch_is_existing}"
+          echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
       - name: Delete branch
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
