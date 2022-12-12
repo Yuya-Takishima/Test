@@ -2,11 +2,12 @@ on:
   pull_request:
     branches:
     - 'develop_**/**/SCRUM**'
-    types: [opened, closed]
+    types: [closed]
 
 jobs:
-  debug:
+  delete-feature-branch-scrum:
     runs-on: ubuntu-20.04
+    if: github.event.pull_request.merged == true
     timeout-minutes: 3
     steps:
       - name: Get_feature_branch
