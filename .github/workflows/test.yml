@@ -16,7 +16,12 @@ jobs:
           script: |
             let base_ref = "develop_JMAS/2022/SCRUM_502"
             let base_ref_ary = base_ref.split('/')
-            return base_ref_ary
+            let developer_ary = base_ref_ary.shift().split('_')
+            let developer = developer_ary.pop()
+            let year = base_ref_ary.shift()
+            let ticket_no = base_ref_ary.shift()/JMAS/2022/SCRUM-502
+            let target_branch = 'feature/' + developer + '/' + year + '/' + ticket_no
+            return target_branch
       
       - name:  show_ticket
         env:
