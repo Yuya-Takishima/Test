@@ -32,8 +32,8 @@ jobs:
             echo true ||
             echo false
           )
-          echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
           echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
+          echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Delete_feature_branch
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
