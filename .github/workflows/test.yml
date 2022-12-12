@@ -1,0 +1,43 @@
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    steps:
+      - name: Get_feature_branch
+        id: ticket_no
+        uses: actions/github-script@v6
+        env:
+          BASE_BRANCH_NAME: ${{github.base_ref}}
+        with:
+          result-encoding: string
+          script: |
+            let base_ref = "develop_JMAS/2022/SCRUM-502"
+            let base_ref_ary = base_ref.split('/')
+            let developer_ary = base_ref_ary.shift().split('_')
+            let developer = developer_ary.pop()
+            let year = base_ref_ary.shift()
+            let ticket_no = base_ref_ary.shift()
+            return 'feature/' + developer + '/' + year + '/' + ticket_no
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name:  Exsit_feature_branch
+        continue-on-error: true
+        env:
+          BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
+        run: |
+          branch_is_existing=$(
+            git fetch origin ${BRANCH_NAME} &&
+            echo true ||
+            echo false
+          )
+          echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
+          echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
+      - name: Delete_feature_branch
+        if: env.BRANCH_IS_EXISTING == 'true'
+        run: |
+          git fetch origin ${FEATURE_BRANCH}
+          echo git push origin --delete ${FEATURE_BRANCH}
+          echo "${FEATURE_BRANCH}を削除しました"
