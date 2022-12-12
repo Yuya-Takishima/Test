@@ -45,13 +45,17 @@ jobs:
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
         
-          git push origin --delete develop_JMAS/2022/SCRUM-TEST2
+          branch_is_deleted=$(
+            git push origin --delete develop_JMAS/2022/SCRUM-TEST2 &&
+            echo true ||
+            echo false
+          )          
           echo "BRANCH_IS_DELETED=${branch_is_deleted}" >> $GITHUB_ENV
 
       - name: Delete Success
         if: env.BRANCH_IS_DELETED == 'true'
         run: |
-        
+          echo ${BRANCH_NAME}
           echo "ブランチの削除に成功しました"
 
       - name: Delete Failure
