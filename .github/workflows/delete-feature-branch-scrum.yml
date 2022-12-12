@@ -2,11 +2,12 @@ on:
   pull_request:
     branches:
     - 'develop_**/**/SCRUM**'
-    types: [opened, closed]
+    types: [closed]
 
 jobs:
-  debug:
+  delete-feature-branch-scrum:
     runs-on: ubuntu-20.04
+    if: github.event.pull_request.merged == true
     timeout-minutes: 3
     steps:
       - name: Get_feature_branch
@@ -17,7 +18,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            let base_ref = ${{github.base_ref}}
+            let base_ref = "${{github.base_ref}}"
             let base_ref_ary = base_ref.split('/')
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
@@ -40,6 +41,5 @@ jobs:
       - name: Delete_feature_branch
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
-          git fetch origin ${FEATURE_BRANCH}
-          echo git push origin --delete ${FEATURE_BRANCH}
+          git push origin --delete ${FEATURE_BRANCH}
           echo "${FEATURE_BRANCH}を削除しました"
