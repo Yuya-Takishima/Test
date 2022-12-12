@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: get_ticket
+      - name: Get_feature_branch
         id: ticket_no
         uses: actions/github-script@v6
         env:
@@ -14,31 +14,32 @@ jobs:
         with:
           result-encoding: string
           script: |
-            let base_ref = "develop_JMAS/2022/SCRUM-502"
+            let base_ref = "develop_JMAS/2022/SCRUM_502"
             let base_ref_ary = base_ref.split('/')
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
             let year = base_ref_ary.shift()
             let ticket_no = base_ref_ary.shift()
             return 'feature/' + developer + '/' + year + '/' + ticket_no
-      
       - name: Checkout
         uses: actions/checkout@v3
-      - name:  show_ticket
+      - name:  Exsit_feature_branch
         env:
-          TARGET_BRANCH: ${{ steps.ticket_no.outputs.result }}
+          BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
         run: |
           branch_is_existing=$(
-            git fetch origin ${TARGET_BRANCH} &&
+            git fetch origin ${BRANCH_NAME} &&
             echo true ||
             echo false
           )
+          echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
           echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
-      - name: Delete branch
+      - name: Delete_feature_branch
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
-          git fetch origin ${TARGET_BRANCH}
+          git fetch origin ${FEATURE_BRANCH}
+          echo "${FEATURE_BRANCH}を削除しました"
       - name: Delete2 branch
-        if: env.BRANCH_IS_EXISTING == 'false'
+        if: steps.delete.conclusion == 'skipped'
         run: |
-          git fetch origin develop_JMAS/2022/SCRUM_502
+          echo "存在しないブランチ指定だったため、終了"
