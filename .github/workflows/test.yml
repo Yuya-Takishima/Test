@@ -14,7 +14,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            let base_ref = "develop_JMAS/2022/SCRUM-502"
+            let base_ref = "develop_JMAS/2022/SCRUM-TEST"
             let base_ref_ary = base_ref.split('/')
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
@@ -39,7 +39,7 @@ jobs:
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
           branch_is_deleted=$(
-            git push origin --delete ${FEATURE_BRANCH} &&
+            git push origin --delete develop_JMAS/2022/SCRUM-TEST2 &&
             echo true ||
             echo false
           )
