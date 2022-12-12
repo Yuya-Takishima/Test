@@ -7,7 +7,7 @@ on:
     types: [closed]
 
 jobs:
-  delete-feature-branch-scrum:
+  delete-feature-branch:
     runs-on: ubuntu-20.04
     if: github.event.pull_request.merged == true
     timeout-minutes: 3
