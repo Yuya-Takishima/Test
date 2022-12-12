@@ -32,7 +32,7 @@ jobs:
         env:
           BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
         run: |
-        
+      
           branch_is_existing=$(
             git fetch origin ${BRANCH_NAME} &&
             echo true ||
