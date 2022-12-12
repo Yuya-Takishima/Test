@@ -28,16 +28,17 @@ jobs:
         env:
           TARGET_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-          
           branch_is_existing=$(
             git fetch origin ${TARGET_BRANCH} &&
             echo true ||
             echo false
           )
           echo "BRANCH_IS_EXISTING=${branch_is_existing}"
-          branch_is_existing2=$(
-            git fetch origin develop_JMAS/2022/SCRUM-502 &&
-            echo true ||
-            echo false
-          )
-          echo "BRANCH_IS_EXISTING2=${branch_is_existing2}"
+      - name: Delete branch
+        if: env.BRANCH_IS_EXISTING == 'true'
+        run: |
+          git fetch origin ${TARGET_BRANCH}
+      - name: Delete2 branch
+        if: env.BRANCH_IS_EXISTING == 'false'
+        run: |
+          git fetch origin develop_JMAS/2022/SCRUM_502
