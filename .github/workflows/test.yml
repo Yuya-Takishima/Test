@@ -28,5 +28,5 @@ jobs:
         env:
           TARGET_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-          echo git fetch origin ${TARGET_BRANCH}
-          echo git fetch origin develop_JMAS/2022/SCRUM-502
+          git fetch origin ${TARGET_BRANCH}
+          git fetch origin develop_JMAS/2022/SCRUM-502
