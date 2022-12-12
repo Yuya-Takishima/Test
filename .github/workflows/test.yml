@@ -14,7 +14,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            let base_ref = "develop_JMAS/2022/SCRUM_502"
+            let base_ref = "develop_JMAS/2022/SCRUM-502"
             let base_ref_ary = base_ref.split('/')
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
@@ -39,8 +39,5 @@ jobs:
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
           git fetch origin ${FEATURE_BRANCH}
+          echo git push origin --delete ${FEATURE_BRANCH}
           echo "${FEATURE_BRANCH}を削除しました"
-      - name: Delete2 branch
-        if: steps.delete.conclusion == 'skipped'
-        run: |
-          echo "存在しないブランチ指定だったため、終了"
