@@ -12,7 +12,7 @@ jobs:
         env:
           BASE_BRANCH_NAME: ${{github.base_ref}}
         with:
-          result-encoding: array
+          result-encoding: string
           script: |
             let base_ref = "develop_JMAS/2022/SCRUM_502"
             let base_ref_ary = base_ref.split('/')
