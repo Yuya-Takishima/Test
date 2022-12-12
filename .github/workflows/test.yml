@@ -19,7 +19,7 @@ jobs:
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
             let year = base_ref_ary.shift()
-            let ticket_no = base_ref_ary.shift()/JMAS/2022/SCRUM-502
+            let ticket_no = base_ref_ary.shift()
             let target_branch = 'feature/' + developer + '/' + year + '/' + ticket_no
             return target_branch
       
