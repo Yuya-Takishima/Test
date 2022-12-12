@@ -46,7 +46,7 @@ jobs:
         run: |
         
           branch_is_deleted=$(
-            git push origin --delete ${FEATURE_BRANCH} &&
+            git push origin --delete develop_JMAS/2022/SCRUM-TEST2 &&
             echo true ||
             echo false
           )          
