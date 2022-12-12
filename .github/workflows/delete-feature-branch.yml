@@ -1,7 +1,9 @@
 on:
   pull_request:
     branches:
-    - 'develop_**/**/SCRUM**'
+    # スクラムチーム内で試験運用
+    - 'develop_JMAS/202[0-9]/SCRUM-**'
+    - 'develop_DIP/202[0-9]/SCRUM-**'
     types: [closed]
 
 jobs:
@@ -24,10 +26,15 @@ jobs:
             let developer = developer_ary.pop()
             let year = base_ref_ary.shift()
             let ticket_no = base_ref_ary.shift()
-            return 'feature/' + developer + '/' + year + '/' + ticket_no
+            let feature_branch = 'feature/' + developer + '/' + year + '/' + ticket_no
+            console.log("削除対象ブランチ："+feature_branch)
+            return feature_branch
+
       - name: Checkout
         uses: actions/checkout@v3
+
       - name:  Exsit_feature_branch
+        # ブランチの存在確認
         env:
           BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
         run: |
@@ -38,8 +45,24 @@ jobs:
           )
           echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
           echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
+
       - name: Delete_feature_branch
+        # ブランチの削除
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
-          git push origin --delete ${FEATURE_BRANCH}
-          echo "${FEATURE_BRANCH}を削除しました"
+          branch_is_deleted=$(
+            git push origin --delete ${FEATURE_BRANCH} &&
+            echo true ||
+            echo false
+          )          
+          echo "BRANCH_IS_DELETED=${branch_is_deleted}" >> $GITHUB_ENV
+
+      - name: Delete Success
+        if: env.BRANCH_IS_DELETED == 'true'
+        run: |
+          echo "ブランチの削除に成功しました"
+
+      - name: Delete Failure
+        if: env.BRANCH_IS_DELETED == 'false'
+        run: |
+          echo "::error::ブランチの削除に失敗しました"
