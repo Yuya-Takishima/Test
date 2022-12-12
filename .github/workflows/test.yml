@@ -12,15 +12,11 @@ jobs:
         env:
           BASE_BRANCH_NAME: ${{github.base_ref}}
         with:
-          result-encoding: string
+          result-encoding: array
           script: |
-            const { BASE_BRANCH_NAME } = process.env
-            console.log(`Hello ${BASE_BRANCH_NAME}`)
-            console.log(process.env)
-            console.log(BASE_BRANCH_NAME)
             let base_ref = "develop_JMAS/2022/SCRUM_502"
             let base_ref_ary = base_ref.split('/')
-            return base_ref_ary.pop()
+            return base_ref_ary
       
       - name:  show_ticket
         env:
