@@ -17,7 +17,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            let base_ref = ${{github.base_ref}}
+            let base_ref = "${{github.base_ref}}"
             let base_ref_ary = base_ref.split('/')
             let developer_ary = base_ref_ary.shift().split('_')
             let developer = developer_ary.pop()
