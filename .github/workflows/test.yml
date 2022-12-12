@@ -38,6 +38,14 @@ jobs:
       - name: Delete_feature_branch
         if: env.BRANCH_IS_EXISTING == 'true'
         run: |
-          git fetch origin ${FEATURE_BRANCH}
-          echo git push origin --delete ${FEATURE_BRANCH}
+          branch_is_deleted=$(
+            git push origin --delete ${FEATURE_BRANCH} &&
+            echo true ||
+            echo false
+          )
+          echo "BRANCH_IS_DELETED=${branch_is_deleted}" >> $GITHUB_ENV
           echo "${FEATURE_BRANCH}を削除しました"
+      - name: Result
+        if: env.BRANCH_IS_DELETED == 'false'
+        run: |
+          echo "${FEATURE_BRANCH}の削除に失敗しました"
