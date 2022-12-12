@@ -24,6 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name:  Exsit_feature_branch
+        continue-on-error: true
         env:
           BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
         run: |
