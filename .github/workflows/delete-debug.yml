@@ -10,7 +10,7 @@ jobs:
         id: ticket_no
         uses: actions/github-script@v5
         env:
-          BASE_BRANCH_NAME: ${{github.base_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}} 
         with:
           result-encoding: string
           script: |
