@@ -1,63 +1,52 @@
+
+name: delete-debug
+
 on:
   push:
+    branches:
+    # スクラムチーム内で試験運用
+    - 'feature/JMAS/202[0-9]/SCRUM-**'
+    - 'feature/DIP/202[0-9]/SCRUM-**'
 
 jobs:
   delete-debug:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: Get_feature_branch
+      - name: Get develop branch
         id: ticket_no
-        uses: actions/github-script@v6
-        env:
-          BASE_BRANCH_NAME: ${{github.base_ref}}
+        uses: actions/github-script@v5
         with:
           result-encoding: string
           script: |
-            let base_ref = "develop_JMAS/2022/SCRUM-TEST"
-            let base_ref_ary = base_ref.split('/')
-            let developer_ary = base_ref_ary.shift().split('_')
-            let developer = developer_ary.pop()
-            let year = base_ref_ary.shift()
-            let ticket_no = base_ref_ary.shift()
-            let feature_branch = 'feature/' + developer + '/' + year + '/' + ticket_no
-            console.log("削除対象ブランチ："+feature_branch)
-            return feature_branch
+            console.log("${{github.ref_name}}")
+            console.log("feature/JMAS/2022/SCRUM-502")
+            const ref = "${{github.ref_name}}"
+            const refs = ref.split('/')
+            const developer = refs.shift().shift()
+            const year = refs.shift()
+            const ticket_no = refs.shift()
+            const develop_branch = 'develop_' + developer + '/' + year + '/' + ticket_no
+            console.log("対象ブランチ："+develop_branch)
+            return develop_branch
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-      - name:  Exsit_feature_branch
+      - name:  Exsit develop branch
         continue-on-error: true
+        id: exsit
         env:
-          BRANCH_NAME: ${{ steps.ticket_no.outputs.result }}
+          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-        
-          branch_is_existing=$(
-            git fetch origin ${BRANCH_NAME} &&
-            echo true ||
-            echo false
-          )
-          echo "BRANCH_IS_EXISTING=${branch_is_existing}" >> $GITHUB_ENV
-          echo "FEATURE_BRANCH=${BRANCH_NAME}" >> $GITHUB_ENV
+          echo git fetch origin ${{ env.DEVELOP_BRANCH }}
 
-      - name: Delete_feature_branch
-        if: env.BRANCH_IS_EXISTING == 'true'
+      - name: Create develop branch
+        if: ${{ steps.exsit.outcome == 'failure' }}
+        env:
+          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-        
-          branch_is_deleted=$(
-            git push origin --delete ${FEATURE_BRANCH} &&
-            echo true ||
-            echo false
-          )          
-          echo "BRANCH_IS_DELETED=${branch_is_deleted}" >> $GITHUB_ENV
-
-      - name: Delete Success
-        if: env.BRANCH_IS_DELETED == 'true'
-        run: |
-          echo "ブランチの削除に成功しました"
-
-      - name: Delete Failure
-        if: env.BRANCH_IS_DELETED == 'false'
-        run: |
-          echo "::error::ブランチの削除に失敗しました"
+          echo git checkout -b ${{ env.DEVELOP_BRANCH }} master
+          echo git push origin ${{ env.DEVELOP_BRANCH }}
