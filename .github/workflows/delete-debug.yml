@@ -48,5 +48,5 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-          echo git checkout -b ${{ env.DEVELOP_BRANCH }} master
-          echo git push origin ${{ env.DEVELOP_BRANCH }}
+          git checkout -b ${{ env.DEVELOP_BRANCH }} master
+          git push origin ${{ env.DEVELOP_BRANCH }}
