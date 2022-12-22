@@ -50,3 +50,12 @@ jobs:
         run: |
           git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
           git push origin ${{ env.DEVELOP_BRANCH }}
+
+      - name: Marge develop branch
+        if: ${{ steps.exsit.outcome == 'success' }}
+        env:
+          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
+        run: |
+          git switch ${{ env.DEVELOP_BRANCH }}
+          git merge remotes/origin/main
+          git push origin ${{ env.DEVELOP_BRANCH }}
