@@ -41,6 +41,8 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
+          git config --global user.email "xxxxx@xxx.com"
+          git config --global user.name "github actions"
           git fetch origin ${{ env.DEVELOP_BRANCH }}
 
       - name: Create develop branch
@@ -56,8 +58,6 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-          git config --global user.email "xxxxx@xxx.com"
-          git config --global user.name "github actions"
           git switch ${{ env.DEVELOP_BRANCH }}
           git merge remotes/origin/main
           git push origin ${{ env.DEVELOP_BRANCH }}
