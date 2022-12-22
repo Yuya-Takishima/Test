@@ -41,7 +41,7 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
-          echo git fetch origin ${{ env.DEVELOP_BRANCH }}
+          git fetch origin ${{ env.DEVELOP_BRANCH }}
 
       - name: Create develop branch
         if: ${{ steps.exsit.outcome == 'failure' }}
