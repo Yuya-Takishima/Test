@@ -3,6 +3,10 @@ name: delete-debug
 
 on:
   push:
+    branches:
+    # スクラムチーム内で試験運用
+    - 'feature/JMAS/202[0-9]/SCRUM-**'
+    - 'feature/DIP/202[0-9]/SCRUM-**'
 
 jobs:
   delete-debug:
