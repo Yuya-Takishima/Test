@@ -23,9 +23,9 @@ jobs:
             console.log("feature/JMAS/2022/SCRUM-502")
             const ref = "${{github.ref_name}}"
             const refs = ref.split('/')
-            const developer = refs.shift().shift()
-            const year = refs.shift()
-            const ticket_no = refs.shift()
+            const ticket_no = refs.pop()
+            const year = refs.pop()
+            const developer = refs.pop()
             const develop_branch = 'develop_' + developer + '/' + year + '/' + ticket_no
             console.log("対象ブランチ："+develop_branch)
             return develop_branch
