@@ -1,5 +1,5 @@
 
-name: delete-debug
+name: debug
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     - 'feature/DIP/202[0-9]/SCRUM-**'
 
 jobs:
-  delete-debug:
+  debug:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
@@ -41,6 +41,8 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
+          git config --global user.email "xxxxx@xxx.com"
+          git config --global user.name "github actions"
           git fetch origin ${{ env.DEVELOP_BRANCH }}
 
       - name: Create develop branch
