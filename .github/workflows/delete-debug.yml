@@ -58,3 +58,4 @@ jobs:
         run: |
           git switch ${{ env.DEVELOP_BRANCH }}
           git merge remotes/origin/main
+          git push origin ${{ env.DEVELOP_BRANCH }}
