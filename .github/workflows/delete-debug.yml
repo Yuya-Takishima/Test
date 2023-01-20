@@ -73,4 +73,4 @@ jobs:
           DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
           TICKET_NO: ${{ steps.ticket_no.outputs.result }}
         run: |
-          gh pr create -base ${{ env.DEVELOP_BRANCH }} -t "【${{ env.TICKET_NO }}】" -b ""
+          gh pr create -B "${{ env.DEVELOP_BRANCH }}" -t "【${{ env.TICKET_NO }}】" -b ""
