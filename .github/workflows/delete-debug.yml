@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: Get develop branch
-        id: ticket_no
+        id: dev_branch
         uses: actions/github-script@v5
         with:
           result-encoding: string
@@ -28,7 +28,7 @@ jobs:
             const developer = refs.pop()
             const develop_branch = 'develop_' + developer + '/' + year + '/' + ticket_no
             console.log("対象ブランチ："+develop_branch)
-            return develop_branch
+            return {develop_branch, ticket_no}
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,25 +39,6 @@ jobs:
         continue-on-error: true
         id: exsit
         env:
-          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
+          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result.develop_branch }}
         run: |
-          git config --global user.email "xxxxx@xxx.com"
-          git config --global user.name "github actions"
-          git fetch origin ${{ env.DEVELOP_BRANCH }}
-
-      - name: Create develop branch
-        if: ${{ steps.exsit.outcome == 'failure' }}
-        env:
-          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
-        run: |
-          git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
-          git push origin ${{ env.DEVELOP_BRANCH }}
-
-      - name: Marge develop branch
-        if: ${{ steps.exsit.outcome == 'success' }}
-        env:
-          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
-        run: |
-          git switch ${{ env.DEVELOP_BRANCH }}
-          git merge remotes/origin/main
-          git push origin ${{ env.DEVELOP_BRANCH }}
+          echo git fetch origin ${{ env.DEVELOP_BRANCH }}
