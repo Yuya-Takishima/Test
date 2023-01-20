@@ -12,6 +12,10 @@ jobs:
   debug:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
+    
+    env:
+      GH_TOKEN: ${{ sercrets.GITHUB_TOEN }}
+    
     steps:
       - name: Get develop branch
         id: dev_branch
