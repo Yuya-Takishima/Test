@@ -48,8 +48,8 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "github actions"
-          echo git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
-          echo git push origin ${{ env.DEVELOP_BRANCH }}
+          git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
+          git push origin ${{ env.DEVELOP_BRANCH }}
 
       - name: Get Ticket No
         if: ${{ steps.exsit.outcome == 'failure' }}
@@ -69,4 +69,4 @@ jobs:
           DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
           TICKET_NO: ${{ steps.ticket_no.outputs.result }}
         run: |
-          echo gh pr create -B ${{ env.DEVELOP_BRANCH }} -t ${{ env.TICKET_NO }} -b ""
+          gh pr create -B ${{ env.DEVELOP_BRANCH }} -t "【${{ env.TICKET_NO }}】" -b ""
