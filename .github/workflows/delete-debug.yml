@@ -44,7 +44,7 @@ jobs:
       - name: Create develop branch
         if: ${{ steps.exsit.outcome == 'failure' }}
         env:
-          DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
+          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
         run: |
           git config user.email "action@github.com"
           git config user.name "github actions"
