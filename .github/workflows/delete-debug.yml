@@ -46,6 +46,8 @@ jobs:
         env:
           DEVELOP_BRANCH: ${{ steps.ticket_no.outputs.result }}
         run: |
+          git config user.email "action@github.com"
+          git config user.name "github actions"
           git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
           git push origin ${{ env.DEVELOP_BRANCH }}
 
