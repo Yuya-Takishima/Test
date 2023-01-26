@@ -1,5 +1,6 @@
-<<<<<<< HEAD
+<a<<<<<< HEAD
 qwe
 =======
 aaaaaaaasasdasdasdasd
 >>>>>>> feature/JMAS/2022/SCRUM-TEST
+s

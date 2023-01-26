@@ -12,6 +12,10 @@ jobs:
   debug:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
+    
+    env:
+      GH_TOKEN: ${{ github.token }}
+    
     steps:
       - name: Get develop branch
         id: dev_branch
@@ -19,16 +23,14 @@ jobs:
         with:
           result-encoding: string
           script: |
-            console.log("${{github.ref_name}}")
-            console.log("feature/JMAS/2022/SCRUM-502")
             const ref = "${{github.ref_name}}"
             const refs = ref.split('/')
             const ticket_no = refs.pop()
             const year = refs.pop()
             const developer = refs.pop()
             const develop_branch = 'develop_' + developer + '/' + year + '/' + ticket_no
-            console.log("対象ブランチ："+develop_branch)
-            return {develop_branch, ticket_no}
+            console.log("作成対象ブランチ："+develop_branch)
+            return develop_branch
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,6 +41,16 @@ jobs:
         continue-on-error: true
         id: exsit
         env:
-          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result.develop_branch }}
+          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
         run: |
-          echo git fetch origin ${{ env.DEVELOP_BRANCH }}
+          git fetch origin ${{ env.DEVELOP_BRANCH }}
+
+      - name: Create develop branch
+        if: ${{ steps.exsit.outcome == 'failure' }}
+        env:
+          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "github actions"
+          git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
+          git push origin ${{ env.DEVELOP_BRANCH }}
