@@ -54,23 +54,3 @@ jobs:
           git config user.name "github actions"
           git checkout -b ${{ env.DEVELOP_BRANCH }} remotes/origin/main
           git push origin ${{ env.DEVELOP_BRANCH }}
-
-      - name: Get Ticket No
-        if: ${{ steps.exsit.outcome == 'failure' }}
-        id: ticket_no
-        uses: actions/github-script@v5
-        with:
-          result-encoding: string
-          script: |
-            const ref = "${{github.ref_name}}"
-            const refs = ref.split('/')
-            const ticket_no = refs.pop()
-            return ticket_no
-
-      - name: Create pr
-        if: ${{ steps.exsit.outcome == 'failure' }}
-        env:
-          DEVELOP_BRANCH: ${{ steps.dev_branch.outputs.result }}
-          TICKET_NO: ${{ steps.ticket_no.outputs.result }}
-        run: |
-          gh pr create -B "${{ env.DEVELOP_BRANCH }}" -t "【${{ env.TICKET_NO }}】" -b ""
