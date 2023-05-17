@@ -37,6 +37,7 @@ click E "https://acrf-image-x-institute.github.io/mri_distortion_toolkit/reporti
 
 ```mermaid
   flowchart TD;
+      H[<a href='#test2'>Test2</a>]
       A["link test (open in same tab)"]
       B["link test (open in new tab)"]
       C[anchor test]
