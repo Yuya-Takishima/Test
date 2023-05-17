@@ -30,5 +30,7 @@ asdasdasdasdasdasd
       I --> J[勤務地の交通時間1を勤務地表示用交通時間に設定する];
       J --> H;
       H -->|Yes| K{勤務地の交通手段1及び交通時間1に値が入っている};
-      click A "#Test2" _blank
+      click A "#test2" _top
+      click B "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
+      click B "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
 ```
