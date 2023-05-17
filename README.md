@@ -44,9 +44,9 @@ click E "https://acrf-image-x-institute.github.io/mri_distortion_toolkit/reporti
       E[other protocol test]
       F[script test]
       TITLE --> A & B & C & D & E & F
-      click A "https://mermaid-js.github.io/mermaid/#/" "link test (open in same tab)"
-      click B "https://mermaid-js.github.io/mermaid/#/" "link test (open in new tab)" _blank
-      click C "#test2"
+      click A "https://mermaid-js.github.io/mermaid/#/" _self
+      click B "https://mermaid-js.github.io/mermaid/#/" _self
+      click C "#test2" _self
       click D "mailto:user@user.user" "mailto test"
       click E "notes://do-your-thing/id" "other protocol test"
       click F "javascript:alert('test')" "script test"
