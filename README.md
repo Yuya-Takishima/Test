@@ -34,3 +34,21 @@ asdasdasdasdasdasd
       click B "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
       click C "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
 ```
+
+```mermaid
+  flowchart TD;
+      A["link test (open in same tab)"]
+      B["link test (open in new tab)"]
+      C[anchor test]
+      D[mailto test]
+      E[other protocol test]
+      F[script test]
+      TITLE --> A & B & C & D & E & F
+      click A "https://mermaid-js.github.io/mermaid/#/" "link test (open in same tab)"
+      click B "https://mermaid-js.github.io/mermaid/#/" "link test (open in new tab)" _blank
+      click C "#test2"
+      click D "mailto:user@user.user" "mailto test"
+      click E "notes://do-your-thing/id" "other protocol test"
+      click F "javascript:alert('test')" "script test"
+
+```
