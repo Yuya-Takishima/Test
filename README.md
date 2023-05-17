@@ -32,5 +32,5 @@ asdasdasdasdasdasd
       H -->|Yes| K{勤務地の交通手段1及び交通時間1に値が入っている};
       click A "#test2" _top
       click B "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
-      click B "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
+      click C "https://github.com/Yuya-Takishima/Test/tree/test#test3" _top
 ```
