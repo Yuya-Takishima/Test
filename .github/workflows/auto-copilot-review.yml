@@ -1,0 +1,95 @@
+name: Auto GitHub Copilot Review
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  setup-copilot-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Setup GitHub Copilot Review Instructions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pullNumber = context.payload.pull_request.number;
+            const currentBody = context.payload.pull_request.body || '';
+            
+            // GitHub Copilotへの指示を含む新しいPR説明文
+            const copilotInstructions = `<!-- GitHub Copilot Review Instructions -->
+@github-copilot このプルリクエストのレビューを日本語で、以下のプレフィックスルールに従って実施してください：
+[must] 必須変更, [imo] 意見, [nits] 些細な指摘, [ask] 質問, [fyi] 参考情報
+
+---
+
+`;
+            
+            // 既存の説明文にCopilotの指示を追加（既に存在しない場合のみ）
+            if (!currentBody.includes('@github-copilot')) {
+              const newBody = copilotInstructions + currentBody;
+              
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pullNumber,
+                body: newBody
+              });
+              
+              console.log('GitHub Copilot instructions added to PR description');
+            }
+            
+            // 追加のコメントでより詳細な指示を投稿
+            const detailedInstructions = `🤖 **GitHub Copilot レビュー設定完了**
+
+以下のガイドラインに従ってレビューを実施します：
+
+**言語**: 日本語
+**プレフィックスルール**:
+- \`[must]\` → 必ず変更してほしい重要な指摘
+- \`[imo]\` → 個人的な意見（修正必須ではない）  
+- \`[nits]\` → 些細な指摘（nitpick）
+- \`[ask]\` → 質問・確認事項
+- \`[fyi]\` → 参考情報・豆知識
+
+@github-copilot レビューをお願いします！`;
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pullNumber,
+              body: detailedInstructions
+            });
+            
+            console.log('Detailed GitHub Copilot review instructions posted');
+
+  trigger-copilot-review:
+    runs-on: ubuntu-latest
+    needs: setup-copilot-review
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Trigger GitHub Copilot Review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pullNumber = context.payload.pull_request.number;
+            
+            // 少し待ってからCopilotに再度レビューを依頼
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pullNumber,
+              body: '@github-copilot review'
+            });
+            
+            console.log('GitHub Copilot review triggered');
