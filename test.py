@@ -3,3 +3,6 @@ print("This is a test script.")
 # Additional functionality can be added here
 print("End of script.")
 # You can run this script to see the output
+test = "This is a test variable."
+print(test)
+# This script is meant to demonstrate basic Python functionality
